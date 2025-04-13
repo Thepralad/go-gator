@@ -1,3 +1,4 @@
+//System for easy command insertion and removal
 package main
 
 type command struct{

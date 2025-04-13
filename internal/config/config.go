@@ -1,3 +1,4 @@
+//Package for accessing, opening and interacting with the config.json file in /home
 package config
 
 import (
@@ -11,12 +12,15 @@ type Config struct {
 	Current_user_name string `json:"current_user_name"`
 }
 
+// Reads the json file and returns instance of Config
 func Read() (Config, error) {
+	//Getting the json file path
 	filePath, err := getConfigFilePath()
 	if err != nil {
 		return Config{}, err
 	}
 
+	//Opening the json file
 	file, err := os.Open(filePath)
 	if err != nil {
 		return Config{}, err
@@ -24,6 +28,7 @@ func Read() (Config, error) {
 
 	defer file.Close()
 
+	//Unmarshaling and appending it to a Config instance and returning it
 	decoder := json.NewDecoder(file)
 	cfg := Config{}
 	err = decoder.Decode(&cfg)
@@ -55,6 +60,7 @@ func getConfigFilePath() (string, error) {
 }
 
 // Helper
+//Overwriting the contents of json file with the new cfg(from the params)
 func writer(cfg Config) error {
 	path, err := getConfigFilePath()
 	if err != nil {

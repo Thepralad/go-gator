@@ -1,4 +1,4 @@
--- +goose up
+-- +goose Up
 CREATE TABLE users (
     id INT PRIMARY KEY,
     created_at TIMESTAMP NOT NULL,
@@ -6,5 +6,5 @@ CREATE TABLE users (
     name VARCHAR(255) UNIQUE
 );
 
--- +goose down
-DROP TABLE users;
+-- +goose Down
+-- DROP TABLE users;

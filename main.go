@@ -23,7 +23,9 @@ func main() {
 
 	connStr := loadConfigFromFile.Db_url
 	db, err := sql.Open("postgres", connStr)
-
+	if err != nil {
+		log.Print(err)
+	}
 	dbQuries := database.New(db)
 	args := os.Args
 	if len(args) <= 2 {

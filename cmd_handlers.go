@@ -36,6 +36,7 @@ func handlerLogin(s *state, cmd command) error {
 	return nil
 }
 
+// Reset the gator.users table
 func handlerReset(s *state, cmd command) error {
 	s.cfg.Current_user_name = ""
 	ctx := context.Background()
@@ -47,6 +48,7 @@ func handlerReset(s *state, cmd command) error {
 	return nil
 }
 
+// Regsiters a new user to the gator.users table
 func handlerRegister(s *state, cmd command) error {
 	if len(cmd.Args) < 1 {
 		return fmt.Errorf("the args is empty :(")
@@ -80,6 +82,24 @@ func handlerRegister(s *state, cmd command) error {
 	err = s.cfg.SetUser(cmd.Args[0])
 	if err != nil {
 		return fmt.Errorf("not being able to switch user :(")
+	}
+	return nil
+}
+
+func handlerGetUsers(s *state, cmd command) error {
+	ctx := context.Background()
+	ctxWithTimeout, _ := context.WithTimeout(ctx, 3*time.Second)
+	users, err := s.db.GetUsers(ctxWithTimeout)
+	if err != nil {
+		return err
+	}
+	for i := 0; i < len(users); i++ {
+		if s.cfg.Current_user_name == users[i].String {
+			fmt.Printf("* %s (current)\n", users[i].String)
+		} else {
+			fmt.Printf("* %s\n", users[i].String)
+		}
+
 	}
 	return nil
 }

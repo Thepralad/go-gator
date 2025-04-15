@@ -23,6 +23,8 @@ func (c *commands) run(s *state, cmd command) error {
 		handlerRegister(s, cmd)
 	} else if cmd.Name == "reset" {
 		handlerReset(s, cmd)
+	} else if cmd.Name == "users" {
+		handlerGetUsers(s, cmd)
 	}
 	return nil
 }

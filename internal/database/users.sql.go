@@ -63,6 +63,33 @@ func (q *Queries) GetUser(ctx context.Context, name sql.NullString) (User, error
 	return i, err
 }
 
+const getUsers = `-- name: GetUsers :many
+SELECT name FROM users
+`
+
+func (q *Queries) GetUsers(ctx context.Context) ([]sql.NullString, error) {
+	rows, err := q.db.QueryContext(ctx, getUsers)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []sql.NullString
+	for rows.Next() {
+		var name sql.NullString
+		if err := rows.Scan(&name); err != nil {
+			return nil, err
+		}
+		items = append(items, name)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const resetUsers = `-- name: ResetUsers :exec
 DELETE FROM users
 `

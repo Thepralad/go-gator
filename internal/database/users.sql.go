@@ -8,9 +8,7 @@ package database
 import (
 	"context"
 	"database/sql"
-	"log"
 	"time"
-
 )
 
 const createUser = `-- name: CreateUser :one
@@ -45,7 +43,6 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		&i.UpdatedAt,
 		&i.Name,
 	)
-	log.Printf("%v added to DB", arg.Name)
 	return i, err
 }
 
@@ -64,4 +61,13 @@ func (q *Queries) GetUser(ctx context.Context, name sql.NullString) (User, error
 		&i.Name,
 	)
 	return i, err
+}
+
+const resetUsers = `-- name: ResetUsers :exec
+DELETE FROM users
+`
+
+func (q *Queries) ResetUsers(ctx context.Context) error {
+	_, err := q.db.ExecContext(ctx, resetUsers)
+	return err
 }

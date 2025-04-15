@@ -36,6 +36,17 @@ func handlerLogin(s *state, cmd command) error {
 	return nil
 }
 
+func handlerReset(s *state, cmd command) error {
+	s.cfg.Current_user_name = ""
+	ctx := context.Background()
+	ctxWithTimeout, _ := context.WithTimeout(ctx, 3*time.Second)
+	err := s.db.ResetUsers(ctxWithTimeout)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return nil
+}
+
 func handlerRegister(s *state, cmd command) error {
 	if len(cmd.Args) < 1 {
 		return fmt.Errorf("the args is empty :(")

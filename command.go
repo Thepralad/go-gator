@@ -21,6 +21,8 @@ func (c *commands) run(s *state, cmd command) error {
 		handlerLogin(s, cmd)
 	} else if cmd.Name == "register" {
 		handlerRegister(s, cmd)
+	} else if cmd.Name == "reset" {
+		handlerReset(s, cmd)
 	}
 	return nil
 }

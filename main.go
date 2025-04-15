@@ -28,7 +28,7 @@ func main() {
 	}
 	dbQuries := database.New(db)
 	args := os.Args
-	if len(args) <= 2 {
+	if len(args) <= 1 {
 		os.Exit(1)
 	}
 
@@ -37,6 +37,7 @@ func main() {
 
 	cmds.register("login", handlerLogin)
 	cmds.register("register", handlerRegister)
+	cmds.register("reset", handlerReset)
 
 	cmds.run(&s, command{args[1], args[2:]})
 }
